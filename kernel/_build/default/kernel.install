@@ -1,0 +1,8 @@
+lib: [
+  "_build/install/default/lib/kernel/META"
+  "_build/install/default/lib/kernel/dune-package"
+  "_build/install/default/lib/kernel/opam"
+]
+bin: [
+  "_build/install/default/bin/kernel.exe"
+]

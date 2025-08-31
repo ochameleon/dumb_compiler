@@ -1,0 +1,26 @@
+(lang dune 3.17)
+
+(using menhir 3.0)
+
+(name kernel)
+
+(generate_opam_files true)
+
+(source
+ (github ochameleon/new_compiler))
+
+(authors "Giulio Caflisch <giuliocaflisch@gmail.com>")
+
+(maintainers "Giulio Caflisch <giuliocaflisch@gmail.com>")
+
+(license LICENSE)
+
+(documentation "https://ochameleon.github.io/documentation")
+
+(package
+ (name kernel)
+ (synopsis "A short synopsis")
+ (description "A longer description")
+ (depends ocaml)
+ (tags
+  ("compiler" "proof" "formalization" "computation" your project)))

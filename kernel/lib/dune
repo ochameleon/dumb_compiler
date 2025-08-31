@@ -1,0 +1,16 @@
+(include_subdirs unqualified)
+
+(library
+ (name kernel)
+ (libraries sedlex menhirLib pratter)
+ (preprocess
+  (pps ppx_deriving.show sedlex.ppx))
+ (modules
+
+  expression
+  
+  debug
+
+  execution
+
+  reader tokenizer parser parser_ interpreter))

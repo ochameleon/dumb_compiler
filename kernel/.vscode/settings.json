@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "_build/": true,
+        "test/" : true
+    },
+    "ocaml.sandbox": {
+        "kind": "opam",
+        "switch": "4.14.0"
+    }
+}

@@ -1,0 +1,30 @@
+type token =
+    WhiteSpace
+  | SingleQuote
+  | Semicolon
+  | RightSmallProofBracket
+  | RightRoundBracket
+  | RightProofBracket
+  | NewLine
+  | LeftSmallProofBracket
+  | LeftRoundBracket
+  | LeftProofBracket
+  | InfixIdentifier1 of string
+  | InfixIdentifier0 of string
+  | Identifier of string
+  | EndOfFile
+  | DoubleQuote
+  | Comma
+  | BadToken
+val menhir_begin_marker : int
+val xv_terminal_expression : Expression.expression
+val xv_sequence_expression : Expression.expression
+val xv_isolated_expression : Expression.expression
+val xv_infix_terminal_expression : Expression.expression
+val xv_expression_option : Expression.expression option
+val xv_expression : Expression.expression
+val xv_comma_extension_expression : Expression.expression
+val xv_bracketized_expression : Expression.expression
+val xv_applied_to_unbracketized_expression : Expression.expression
+val xv_applied_to_bracketized_expression : Expression.expression
+val menhir_end_marker : int
