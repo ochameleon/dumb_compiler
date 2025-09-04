@@ -14,15 +14,22 @@
 %token LeftSmallProofBracket RightSmallProofBracket
 
 %token <string> Identifier
-%token <string> InfixIdentifier0
-%token <string> InfixIdentifier1
+%token <string> PrefixIdentifier0
+%token <string> InfixRightIdentifier0
+%token <string> InfixLeftIdentifier0
+%token <string> PrefixIdentifier1
+%token <string> InfixRightIdentifier1
+%token <string> InfixLeftIdentifier1
 
 %token BadToken
 
+%right PrefixIdentifier0_
+%right InfixRightIdentifier0
+%left  InfixLeftIdentifier0
 
-%right InfixIdentifier0
-%right InfixIdentifier1
-
+%right PrefixIdentifier1_
+%right InfixRightIdentifier1
+%left  InfixLeftIdentifier1
 
 %start <expression option> expression_option
 
@@ -31,8 +38,15 @@
 (* Expressions *)
 
 let infix_terminal_expression ==
-  | i = InfixIdentifier0; { Identifier i }
-  | i = InfixIdentifier1; { Identifier i }
+  | i = InfixRightIdentifier0; { Identifier i }
+  | i = InfixLeftIdentifier0; { Identifier i }
+  | i = InfixRightIdentifier1; { Identifier i }
+  | i = InfixLeftIdentifier1; { Identifier i }
+
+let prefix_terminal_expression0 ==
+  | i = PrefixIdentifier0; { Identifier i }
+let prefix_terminal_expression1 ==
+  | i = PrefixIdentifier1; { Identifier i }
 
 let terminal_expression ==
   | i = Identifier; { Identifier i }
@@ -57,6 +71,8 @@ let applied_to_bracketized_expression :=
 
 let applied_to_unbracketized_expression :=
   | a0 = expression; m = infix_terminal_expression; a1 = expression; { Application { morphism = Application { morphism = m; argument = a0 }; argument = a1 } }
+  | m = prefix_terminal_expression0; a0 = expression; %prec PrefixIdentifier0_ { Application { morphism = m; argument = a0 } }
+  | m = prefix_terminal_expression1; a0 = expression; %prec PrefixIdentifier1_ { Application { morphism = m; argument = a0 } }
 
 let expression ==
   | e = applied_to_bracketized_expression; { e }

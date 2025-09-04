@@ -8,12 +8,16 @@ type token =
   | RightSmallProofBracket
   | RightRoundBracket
   | RightProofBracket
+  | PrefixIdentifier1 of (string)
+  | PrefixIdentifier0 of (string)
   | NewLine
   | LeftSmallProofBracket
   | LeftRoundBracket
   | LeftProofBracket
-  | InfixIdentifier1 of (string)
-  | InfixIdentifier0 of (string)
+  | InfixRightIdentifier1 of (string)
+  | InfixRightIdentifier0 of (string)
+  | InfixLeftIdentifier1 of (string)
+  | InfixLeftIdentifier0 of (string)
   | Identifier of (string)
   | EndOfFile
   | DoubleQuote

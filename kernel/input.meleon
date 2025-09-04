@@ -1,1 +1,4 @@
-(x ↦ x)(5)
+infix left 0 ⇒
+prefix 1 ¬
+
+¬ A ⇒ A

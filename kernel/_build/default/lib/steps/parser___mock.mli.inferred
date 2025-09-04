@@ -5,12 +5,16 @@ type token =
   | RightSmallProofBracket
   | RightRoundBracket
   | RightProofBracket
+  | PrefixIdentifier1 of string
+  | PrefixIdentifier0 of string
   | NewLine
   | LeftSmallProofBracket
   | LeftRoundBracket
   | LeftProofBracket
-  | InfixIdentifier1 of string
-  | InfixIdentifier0 of string
+  | InfixRightIdentifier1 of string
+  | InfixRightIdentifier0 of string
+  | InfixLeftIdentifier1 of string
+  | InfixLeftIdentifier0 of string
   | Identifier of string
   | EndOfFile
   | DoubleQuote
@@ -19,6 +23,8 @@ type token =
 val menhir_begin_marker : int
 val xv_terminal_expression : Expression.expression
 val xv_sequence_expression : Expression.expression
+val xv_prefix_terminal_expression1 : Expression.expression
+val xv_prefix_terminal_expression0 : Expression.expression
 val xv_isolated_expression : Expression.expression
 val xv_infix_terminal_expression : Expression.expression
 val xv_expression_option : Expression.expression option

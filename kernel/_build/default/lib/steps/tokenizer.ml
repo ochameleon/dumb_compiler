@@ -48,19 +48,59 @@ let quotation = [%sedlex.regexp? '\'', Star any, '\'']
 let any_but_special = [%sedlex.regexp? Compl special]
 let name = [%sedlex.regexp? Plus any_but_special]
 
+let number = [%sedlex.regexp? Plus '0'..'9']
+
 (* Keywords *)
 
-let precedence = fun x ->
-  match x with
-  | "+"
-  | "-" -> 0
-  | "*"
-  | "/" -> 1
-  | _ -> 1
+let precedence : (string, string * int * bool) Hashtbl.t = Hashtbl.create 16
 
-let tokenize (buffer : Sedlexing.lexbuf) : Parser_.token =
+let update_precedence name triplet =
+  Hashtbl.replace precedence name triplet
+
+let rec tokenize (buffer : Sedlexing.lexbuf) : Parser_.token =
   match%sedlex buffer with
+  (* Prefix and Infix with precedence (and associativity) *)
+  | "prefix", Plus whitespace, number, Plus whitespace, name, Plus newline ->
+    let full = Sedlexing.Utf8.lexeme buffer in
+    let parts = String.split_on_char ' ' (String.trim full) |> List.filter ((<>) "") in
+    (
+      match parts with
+      | [_; precedence; name] ->
+        let precedence : int =
+          try int_of_string precedence
+          with Failure _ -> 0
+        in
+        update_precedence name ("prefix", precedence, false);
+        tokenize buffer
+      | _ ->
+        failwith ("Malformed prefix declaration: " ^ full)
+
+    )
+  | "infix", Plus whitespace, name, Plus whitespace, number, Plus whitespace, name, Plus newline ->
+    let full = Sedlexing.Utf8.lexeme buffer in
+    let parts = String.split_on_char ' ' (String.trim full) |> List.filter ((<>) "") in
+    (
+      match parts with
+      | [_; associativity; precedence; name] ->
+        let precedence : int =
+          try int_of_string precedence
+          with Failure _ -> 0
+        in
+        let associativity : bool =
+          (
+            match associativity with
+            | "right"  -> true
+            | "left" -> false
+            | _ -> failwith "Unknown associativity"
+          ) in
+        update_precedence name ("infix", precedence, associativity);
+        tokenize buffer
+      | _ ->
+        failwith ("Malformed infix declaration: " ^ full)
+    )
+  
   (* Correct *)
+
   | left_round_bracket, Star (whitespace | newline) -> LeftRoundBracket
   | Star (whitespace | newline), right_round_bracket -> RightRoundBracket
 
@@ -79,22 +119,49 @@ let tokenize (buffer : Sedlexing.lexbuf) : Parser_.token =
   | Plus newline -> NewLine
   | eof -> EndOfFile
 
-  | Plus whitespace, name, Plus whitespace ->
-    let full = Sedlexing.Utf8.lexeme buffer in
-    let id   = String.trim full in
-    (
-      match precedence id with
-      | 0 -> InfixIdentifier0 id
-      | 1 -> InfixIdentifier1 id
-      | _ -> InfixIdentifier1 id
-    )
+  | name, Plus whitespace ->
+      let full = Sedlexing.Utf8.lexeme buffer in
+      let id   = String.trim full in
+      let fixity, precedence, associativity =
+        try Hashtbl.find precedence id
+        with Not_found -> ("none", 0, false)
+      in
+      (
+        match fixity with
+        | "prefix" ->
+          (
+            match precedence with
+            | 0 -> PrefixIdentifier0 id
+            | 1 -> PrefixIdentifier1 id
+            | _ -> PrefixIdentifier1 id
+          )
+        | "infix" ->
+          (
+            match associativity with
+            | false ->
+            (
+              match precedence with
+              | 0 -> InfixLeftIdentifier0 id
+              | 1 -> InfixLeftIdentifier1 id
+              | _ -> InfixLeftIdentifier1 id
+            )
+            | true ->
+            (
+              match precedence with
+              | 0 -> InfixRightIdentifier0 id
+              | 1 -> InfixRightIdentifier1 id
+              | _ -> InfixRightIdentifier1 id
+            )
+          )
+        | _ -> Identifier id
+      )
+  | name ->
+      Identifier (Sedlexing.Utf8.lexeme buffer)
 
-  | name -> Identifier(Sedlexing.Utf8.lexeme buffer)
-  
   (* Errors *)
 
-  | invisible -> failwith "Error: Invisible character used"
-  | _ -> failwith "Error: Unknown error"
+  | invisible -> failwith "Tokenizer Error: Invisible character used"
+  | _ -> failwith "Tokenizer Error: Unknown error"
 
 let provide (buffer : Sedlexing.lexbuf) (_ : unit) : Parser_.token * Lexing.position * Lexing.position =
   let token = tokenize buffer in
