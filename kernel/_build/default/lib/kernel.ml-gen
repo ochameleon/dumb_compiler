@@ -12,6 +12,9 @@ module Expression = Kernel__Expression
 (** @canonical Kernel.Interpreter *)
 module Interpreter = Kernel__Interpreter
 
+(** @canonical Kernel.Lowerer *)
+module Lowerer = Kernel__Lowerer
+
 (** @canonical Kernel.Parser *)
 module Parser = Kernel__Parser
 
@@ -23,3 +26,6 @@ module Reader = Kernel__Reader
 
 (** @canonical Kernel.Tokenizer *)
 module Tokenizer = Kernel__Tokenizer
+
+(** @canonical Kernel.Tokenizer_ *)
+module Tokenizer_ = Kernel__Tokenizer_

@@ -2,15 +2,22 @@
 
 (library
  (name kernel)
- (libraries sedlex menhirLib pratter)
+ (libraries sedlex menhirLib earley.str earley.core)
  (preprocess
   (pps ppx_deriving.show sedlex.ppx))
  (modules
-
   expression
   
   debug
 
   execution
 
-  reader tokenizer parser parser_ interpreter))
+  tokenizer_
+  parser_
+
+  reader
+  tokenizer
+  parser
+
+  lowerer
+  interpreter))

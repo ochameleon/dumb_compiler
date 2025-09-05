@@ -6,9 +6,9 @@
 
 %token LeftRoundBracket RightRoundBracket
 
-%token SingleQuote DoubleQuote
-
 %token Comma Semicolon
+
+%token SingleQuote DoubleQuote
 
 %token LeftProofBracket RightProofBracket
 %token LeftSmallProofBracket RightSmallProofBracket
@@ -17,6 +17,7 @@
 %token <string> PrefixIdentifier0
 %token <string> InfixRightIdentifier0
 %token <string> InfixLeftIdentifier0
+
 %token <string> PrefixIdentifier1
 %token <string> InfixRightIdentifier1
 %token <string> InfixLeftIdentifier1
@@ -30,6 +31,8 @@
 %right PrefixIdentifier1_
 %right InfixRightIdentifier1
 %left  InfixLeftIdentifier1
+
+
 
 %start <expression option> expression_option
 

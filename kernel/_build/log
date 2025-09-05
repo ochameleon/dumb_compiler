@@ -15,4 +15,12 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ C:\Users\UNIEURO\AppData\Local\opam\4.14.0\bin\ocamlc.opt.exe -config > C:\Users\UNIEURO\AppData\Local\Temp\dune_b3be55_output
+$ C:\Users\UNIEURO\AppData\Local\opam\4.14.0\bin\ocamlc.opt.exe -config > C:\Users\UNIEURO\AppData\Local\Temp\dune_6dff5c_output
+$ (cd _build/.sandbox/f99141d9d59b16b754cda98ae140f709/default && .ppx\bccc2ae0a3d8b64dde8d217e10afb136\ppx.exe --cookie "library-name=\"kernel\"" -o lib/steps/parser.pp.ml --impl lib/steps/parser.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ (cd _build/default && C:\Users\UNIEURO\AppData\Local\opam\4.14.0\bin\ocamldep.opt.exe -modules -impl lib/steps/parser.pp.ml) > _build/default/lib/.kernel.objs/kernel__Parser.impl.d
+$ (cd _build/default && C:\Users\UNIEURO\AppData\Local\opam\4.14.0\bin\ocamlc.opt.exe -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I lib/.kernel.objs/byte -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\earley\core -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\earley\str -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\gen -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\menhirLib -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\ppx_deriving/runtime -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\sedlex -I C:\Users\UNIEURO\AppData\Local\opam\4.14.0\lib\seq -no-alias-deps -opaque -open Kernel -o lib/.kernel.objs/byte/kernel__Parser.cmo -c -impl lib/steps/parser.pp.ml)
+> File "lib/steps/parser.ml", line 4, characters 2-17:
+> 4 |   Earley.terminal (fun x -> if x = t then Some () else None)
+>       ^^^^^^^^^^^^^^^
+> Error: Unbound value Earley.terminal
+[2]

@@ -1,1 +1,1 @@
-lib/steps/parser.pp.ml: Expression MenhirLib Parser_
+lib/steps/parser.pp.ml: Earley Earley_core
